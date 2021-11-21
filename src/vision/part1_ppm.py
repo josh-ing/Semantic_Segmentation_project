@@ -43,8 +43,7 @@ class PPM(nn.Module):
         # TODO: YOUR CODE HERE                                                #
         #######################################################################
 
-        raise NotImplementedError('`__init__()` function in ' +
-            '`part1_ppm.py` needs to be implemented')
+        self.features = nn.AdaptiveAvgPool2d(bins)
         
 
         #######################################################################
