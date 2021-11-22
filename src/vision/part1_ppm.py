@@ -36,14 +36,19 @@ class PPM(nn.Module):
         (AdaptiveAvgPool2d, 2d conv w/ 1x1 kernel, 2d batch norm, and ReLU).
         These modules should be stored inside the self.features attribute.
         """
-        super(PPM, self).__init__()
+        # super(PPM, self).__init__()
+        super().__init__()
         self.features = []
 
         #######################################################################
         # TODO: YOUR CODE HERE                                                #
         #######################################################################
 
-        self.features = nn.AdaptiveAvgPool2d(bins)
+        print(bins)
+        for index in range(len(bins)):
+            self.features.append(nn.AdaptiveAvgPool2d(bins[index]))
+            #????
+        # self.features = nn.AdaptiveAvgPool2d(bins)
         
 
         #######################################################################
