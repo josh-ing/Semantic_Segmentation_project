@@ -38,8 +38,10 @@ def make_dataset(split: str, data_root: str, data_list_fpath: str) -> List[Tuple
     # TODO: YOUR CODE HERE                                                    #
     ###########################################################################
 
-    raise NotImplementedError('`make_dataset()` function in ' +
-        '`part2_dataset.py` needs to be implemented')
+    for className in os.listdir(data_root):
+        txt = os.path.join(data_root, className)
+        for txtFile in os.listdir(data_list_fpath):
+            split
     
 
     ###########################################################################
@@ -92,8 +94,10 @@ class SemData(Dataset):
         # TODO: YOUR CODE HERE                                                #
         #######################################################################
 
-        raise NotImplementedError('`__getitem__()` function in ' +
-            '`part2_dataset.py` needs to be implemented')
+        item = self.data_list[index]
+        img_path = item[0]
+        label = item[1]
+        ## idk?
         
 
         #######################################################################

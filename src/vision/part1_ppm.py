@@ -46,10 +46,13 @@ class PPM(nn.Module):
 
         print(bins)
         for index in range(len(bins)):
-            self.features.append(nn.AdaptiveAvgPool2d(bins[index]))
+            self.features.append(nn.Sequential(
+                nn.AdaptiveAvgPool2d(bins[index]), 
+                nn.Conv2d(in_dim, reduction_dim, kernel_size = 1, bias = False), 
+                nn.BatchNorm2d(num_features = reduction_dim), 
+                nn.ReLU()))
             #????
         # self.features = nn.AdaptiveAvgPool2d(bins)
-        
 
         #######################################################################
         #                             END OF YOUR CODE                        #
@@ -80,9 +83,9 @@ class PPM(nn.Module):
         # TODO: YOUR CODE HERE                                                #
         #######################################################################
 
-        raise NotImplementedError('`forward()` function in ' +
-            '`part1_ppm.py` needs to be implemented')
-        
+        x = torch.flatten(x, 1)
+        nn.ModuleList = x
+        #?????
 
         #######################################################################
         #                             END OF YOUR CODE                        #
