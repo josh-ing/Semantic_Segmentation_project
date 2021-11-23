@@ -82,10 +82,15 @@ class PPM(nn.Module):
         #######################################################################
         # TODO: YOUR CODE HERE                                                #
         #######################################################################
-
-        x = torch.flatten(x, 1)
-        nn.UpsamplingBilinear2d(x)
-        nn.ModuleList = x
+        output = []
+        output.append(x)
+        # x = torch.flatten(x, 1)
+        N, in_dim, H, W = x.size()
+        for feature in self.features:
+            y = feature(x)
+            z = F.interpolate(y, size = (H, W), align_corners = True, mode = "bilinear")
+            output.append(z)
+        output = torch.cat(output, dim = 1)
         #?????
 
         #######################################################################

@@ -37,12 +37,23 @@ def make_dataset(split: str, data_root: str, data_list_fpath: str) -> List[Tuple
     ###########################################################################
     # TODO: YOUR CODE HERE                                                    #
     ###########################################################################
-
-    for className in os.listdir(data_root):
-        txt = os.path.join(data_root, className)
-        for txtFile in os.listdir(data_list_fpath):
-            split
-    
+    # print(data_root, data_list_fpath)
+    # image_label_list = []
+    # for className in os.listdir(data_root):
+    #     txt = os.path.join(data_root, className)
+    #     for txtFile in os.listdir(txt):
+    #         label = os.path.join(data_list_fpath, txtFile)
+    #         image_label_list.append((txt, label))
+    image_label_list = []
+    with open(data_list_fpath) as f:
+        lines = f.readlines()
+        for l in lines:
+            image, label = l.split(' ')
+            image1 = os.path.join(data_root, image)
+            label1 = os.path.join(data_root, label)
+            image_label_list.append((image1, label1))
+    print(image_label_list)
+    #is this right??? this can't be right 
 
     ###########################################################################
     #                             END OF YOUR CODE                            #
