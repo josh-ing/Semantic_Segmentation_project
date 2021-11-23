@@ -84,6 +84,7 @@ class PPM(nn.Module):
         #######################################################################
 
         x = torch.flatten(x, 1)
+        nn.UpsamplingBilinear2d(x)
         nn.ModuleList = x
         #?????
 
