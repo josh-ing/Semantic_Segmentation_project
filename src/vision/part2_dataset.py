@@ -52,8 +52,6 @@ def make_dataset(split: str, data_root: str, data_list_fpath: str) -> List[Tuple
             image1 = os.path.join(data_root, image)
             label1 = os.path.join(data_root, label)
             image_label_list.append((image1, label1))
-    print(image_label_list)
-    #is this right??? this can't be right 
 
     ###########################################################################
     #                             END OF YOUR CODE                            #
@@ -104,13 +102,12 @@ class SemData(Dataset):
         #######################################################################
         # TODO: YOUR CODE HERE                                                #
         #######################################################################
-
+        print(self.data_list[index])
         item = self.data_list[index]
-        img_path = item[0]
-        label = item[1]
-        ## idk?
+        print(imageio.imread(item))
+        image = None
+        label = None
         
-
         #######################################################################
         #                             END OF YOUR CODE                        #
         #######################################################################

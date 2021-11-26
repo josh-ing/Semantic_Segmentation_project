@@ -44,7 +44,6 @@ class PPM(nn.Module):
         # TODO: YOUR CODE HERE                                                #
         #######################################################################
 
-        print(bins)
         for index in range(len(bins)):
             self.features.append(nn.Sequential(
                 nn.AdaptiveAvgPool2d(bins[index]), 
