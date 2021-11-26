@@ -102,11 +102,9 @@ class SemData(Dataset):
         #######################################################################
         # TODO: YOUR CODE HERE                                                #
         #######################################################################
-        print(self.data_list[index])
-        item = self.data_list[index]
-        print(imageio.imread(item))
-        image = None
-        label = None
+        imagePath, labelPath = self.data_list[index]
+        image = cv2.imread(imagePath, 1)
+        label = cv2.imread(labelPath, 0)
         
         #######################################################################
         #                             END OF YOUR CODE                        #
