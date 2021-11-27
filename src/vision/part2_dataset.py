@@ -105,11 +105,10 @@ class SemData(Dataset):
         imagePath, labelPath = self.data_list[index]
         colorImage = cv2.imread(imagePath, 1)
         label = cv2.imread(labelPath, 0)
-        image = cv2.cvtColor(colorImage)
-        np.transpose(image)
-        np.transpose(label)
-
-        
+        image = cv2.cvtColor(colorImage, cv2.COLOR_BGR2RGB)
+        C, H, W = torch.Size(image)
+        torch.transpose(image, (C, H, W))
+        torch.transpose(label, (H, W))
         #######################################################################
         #                             END OF YOUR CODE                        #
         #######################################################################
