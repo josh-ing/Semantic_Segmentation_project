@@ -33,8 +33,17 @@ def get_model_and_optimizer(args) -> Tuple[nn.Module, torch.optim.Optimizer]:
     # TODO: YOUR CODE HERE                                                    #
     ###########################################################################
 
-    raise NotImplementedError('`get_model_and_optimizer()` function in ' +
-        '`part3_training_utils.py` needs to be implemented')
+    print(args)
+    model = None
+    optimizer = None
+    #first check args for psp or simpleseg
+    #initialize network based on that 
+    #use learning rate 10x base rate for different layers 
+    #iterate through resnet layers and append 0-4 params dictionary 
+    #5 resnet layers, each dictionary per layer 
+    #optim sgd
+    #each dictionary corresponds to single layer 
+    #always sgd optimizer you need to return 
     
     ###########################################################################
     #                             END OF YOUR CODE                            #
