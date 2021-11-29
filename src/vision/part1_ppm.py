@@ -50,7 +50,6 @@ class PPM(nn.Module):
                 nn.Conv2d(in_dim, reduction_dim, kernel_size = 1, bias = False), 
                 nn.BatchNorm2d(num_features = reduction_dim), 
                 nn.ReLU()))
-            #????
         # self.features = nn.AdaptiveAvgPool2d(bins)
 
         #######################################################################
@@ -90,7 +89,6 @@ class PPM(nn.Module):
             z = F.interpolate(y, size = (H, W), align_corners = True, mode = "bilinear")
             output.append(z)
         output = torch.cat(output, dim = 1)
-        #?????
 
         #######################################################################
         #                             END OF YOUR CODE                        #
