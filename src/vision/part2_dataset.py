@@ -104,10 +104,14 @@ class SemData(Dataset):
         #######################################################################
         imagePath, labelPath = self.data_list[index]
         colorImage = cv2.imread(imagePath, 1)
-        label = cv2.imread(labelPath, 0)
+        print(imagePath)
+        print(labelPath)
+        print(colorImage)
+        grayLabel = cv2.imread(labelPath, 0)
+        print(grayLabel)
         image = cv2.cvtColor(colorImage, cv2.COLOR_BGR2RGB)
+        label = grayLabel
         np.transpose(image, (2,0,1))
-        np.transpose(label, (0,1))
         #######################################################################
         #                             END OF YOUR CODE                        #
         #######################################################################
