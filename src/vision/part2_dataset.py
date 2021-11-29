@@ -49,9 +49,11 @@ def make_dataset(split: str, data_root: str, data_list_fpath: str) -> List[Tuple
         lines = f.readlines()
         for l in lines:
             image, label = l.split(' ')
-            image1 = os.path.join(data_root, image)
-            label1 = os.path.join(data_root, label)
-            image_label_list.append((image1, label1))
+            image1 = image.replace('\n', '')
+            label1 = label.replace('\n', '')
+            image2 = os.path.join(data_root, image1)
+            label2 = os.path.join(data_root, label1)
+            image_label_list.append((image2, label2))
 
     ###########################################################################
     #                             END OF YOUR CODE                            #
