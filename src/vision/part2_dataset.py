@@ -110,9 +110,10 @@ class SemData(Dataset):
         label = label.astype(np.int64)
         image = cv2.cvtColor(colorImage, cv2.COLOR_BGR2RGB)
         image = image.astype(np.float32)
-        image = np.transpose(image, (2,0,1))
-        image = torch.tensor(image)
-        label = torch.tensor(label)
+        if self.transform != None:
+            image, label = self.transform(image = image, label = label)
+        # image = torch.tensor(image)
+        # label = torch.tensor(label)
         #######################################################################
         #                             END OF YOUR CODE                        #
         #######################################################################

@@ -34,9 +34,7 @@ def get_model_and_optimizer(args) -> Tuple[nn.Module, torch.optim.Optimizer]:
     ###########################################################################
 
     if (args['arch'] == 'SimpleSegmentation'):
-        optimizer = optim.SGD([
-            {'params:' model.base.parameters()}
-        ])
+        print('test')
     model = None
     #first check args for psp or simpleseg
     #initialize network based on that 
