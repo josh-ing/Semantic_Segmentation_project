@@ -33,9 +33,16 @@ def get_model_and_optimizer(args) -> Tuple[nn.Module, torch.optim.Optimizer]:
     # TODO: YOUR CODE HERE                                                    #
     ###########################################################################
 
-    if (args['arch'] == 'SimpleSegmentation'):
-        print('test')
-    model = None
+    if (args.arch == 'SimpleSegmentation'):
+        model = SimpleSegmentationNet(num_classes = args.num_classes, pretrained = args.pretrained)
+        parameter_list = [
+            {"params": model.layer0.parameters(), "lr":args.base_lr},
+            {"params": model.layer1.parameters(), "lr": args.base_lr},
+            {"params": model.}
+        ]
+    else:
+        model = (PSPNet(layers = args.layers))
+        
     #first check args for psp or simpleseg
     #initialize network based on that 
     #use learning rate 10x base rate for different layers 
