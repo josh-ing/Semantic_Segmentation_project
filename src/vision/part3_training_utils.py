@@ -36,21 +36,27 @@ def get_model_and_optimizer(args) -> Tuple[nn.Module, torch.optim.Optimizer]:
     if (args.arch == 'SimpleSegmentation'):
         model = SimpleSegmentationNet(num_classes = args.num_classes, pretrained = args.pretrained)
         parameter_list = [
-            {"params": model.layer0.parameters(), "lr":args.base_lr},
-            {"params": model.layer1.parameters(), "lr": args.base_lr},
-            {"params": model.}
+            {"params": model.layer0.parameters(), "lr": args.base_lr},
+            {"params": model.resnet.layer1.parameters(), "lr": args.base_lr},
+            {"params": model.resnet.layer2.parameters(), "lr": args.base_lr},
+            {"params": model.resnet.layer3.parameters(), "lr": args.base_lr},
+            {"params": model.resnet.layer4.parameters(), "lr": args.base_lr}
         ]
     else:
-        model = (PSPNet(layers = args.layers))
-        
-    #first check args for psp or simpleseg
-    #initialize network based on that 
-    #use learning rate 10x base rate for different layers 
-    #iterate through resnet layers and append 0-4 params dictionary 
-    #5 resnet layers, each dictionary per layer 
-    #optim sgd
-    #each dictionary corresponds to single layer 
-    #always sgd optimizer you need to return 
+        model = (PSPNet(layers=args.layers, pretrained=args.pretrained, num_classes=args.classes, zoom_factor=args.zoom_factor))
+        parameter_list = [
+            {"params":model.layer0.parameters(), "lr":args.base_lr},
+            {"params":model.layer1.parameters(), "lr":args.base_lr},
+            {"params":model.layer2.parameters(), "lr":args.base_lr},
+            {"params":model.layer3.parameters(), "lr":args.base_lr},
+            {"params":model.layer4.parameters(), "lr":args.base_lr},
+            {"params":model.ppm.parameters(), "lr":args.base_lr*10},
+            {"params":model.cls.parameters(), "lr":args.base_lr*10},
+            {"params":model.aux.parameters(), "lr":args.base_lr*10}
+        ]
+    optimizer = torch.optim.SGD(
+        parameter_list, weight_decay = args.weight_decay, momentum = args.momentum
+    )
     
     ###########################################################################
     #                             END OF YOUR CODE                            #
@@ -76,10 +82,11 @@ def update_learning_rate(current_lr: float, optimizer: torch.optim.Optimizer) ->
     ###########################################################################
     # TODO: YOUR CODE HERE                                                    #
     ###########################################################################
-
-    raise NotImplementedError('`update_learning_rate()` function in ' +
-        '`part3_training_utils.py` needs to be implemented')
-
+    newLr = current_lr * 10
+    for x in range(5):
+        optimizer.param_groups[x]["lr"] = current_lr
+    for y in range(5, len(optimizer.param_groups)):
+        optimizer.param_groups[y]["lr"] = newLr
 
     ###########################################################################
     #                             END OF YOUR CODE                            #
@@ -123,9 +130,10 @@ def get_train_transform(args) -> transform.Compose:
     # TODO: YOUR CODE HERE                                                    #
     ###########################################################################
 
-    raise NotImplementedError('`get_train_transform()` function in ' +
-        '`part3_training_utils.py` needs to be implemented')
-
+    train_transform = transform.Compose([
+        transform.RandomHorizontalFlip()
+        
+    ])
     
     ###########################################################################
     #                             END OF YOUR CODE                            #
