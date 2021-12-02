@@ -85,8 +85,17 @@ class SimpleSegmentationNet(nn.Module):
         # pixel (yhat).                                                        #
         ########################################################################
 
-        raise NotImplementedError('`forward()` function in ' +
-            '`part4_segmentation_net.py` needs to be implemented')
+        logits = F.interpolate(x, (H, W))
+        n, c, h, w = logits.shape
+
+        yhat = torch.ones(n, h, w)
+        yhat = torch.argmax(logits, dim = 1)
+
+        if (y != None):
+            main_loss = self.criterion(logits, y)
+        else:
+            main_loss = None
+            aux_loss = None
     
 
         #######################################################################

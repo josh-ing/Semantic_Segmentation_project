@@ -3,6 +3,7 @@ from typing import Optional, Tuple
 import torch
 import torch.nn.functional as F
 from torch import nn
+from torch.nn.modules.batchnorm import BatchNorm1d
 
 from vision.resnet import resnet50
 from vision.part1_ppm import PPM
@@ -70,8 +71,24 @@ class PSPNet(nn.Module):
         # Note: layer0 should be sequential                                   #
         #######################################################################
 
-        raise NotImplementedError('`__init__()` function in ' +
-            '`part5_pspnet.py` needs to be implemented')
+        resnet = resnet50(pretrained = pretrained, deep_base = True)
+        self.resnet = resnet
+        self.layer0 = nn.Sequential(
+            resnet.conv1,
+            resnet.bn1,
+            resnet.relu,
+            resnet.conv2,
+            resnet.bn2,
+            resnet.relu,
+            resnet.conv3,
+            resnet.bn3,
+            resnet.relu,
+            resnet.maxpool
+        )
+        self.layer1 = resnet.layer1
+        self.layer2 = resnet.layer2
+        self.layer3 = resnet.layer3
+        self.layer4 = resnet.layer4
         
 
         #######################################################################

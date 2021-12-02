@@ -33,7 +33,7 @@ def get_model_and_optimizer(args) -> Tuple[nn.Module, torch.optim.Optimizer]:
     # TODO: YOUR CODE HERE                                                    #
     ###########################################################################
 
-    if (args.arch == 'SimpleSegmentation'):
+    if (args.arch == 'SimpleSegmentationNet'):
         model = SimpleSegmentationNet(num_classes = args.num_classes, pretrained = args.pretrained)
         parameter_list = [
             {"params": model.layer0.parameters(), "lr": args.base_lr},
@@ -131,8 +131,13 @@ def get_train_transform(args) -> transform.Compose:
     ###########################################################################
 
     train_transform = transform.Compose([
-        transform.RandomHorizontalFlip()
-        
+        transform.RandomHorizontalFlip(),
+        transform.RandomGaussianBlur(),
+        transform.RandRotate([0.3, 0.5], padding = mean),
+        transform.RandScale([0.1, 0.5]),
+        transform.Crop((args.train_h, args.train_w), crop_type = "rand", padding = mean), 
+        transform.ToTensor(),
+        transform.Normalize(mean, std)
     ])
     
     ###########################################################################
@@ -167,8 +172,12 @@ def get_val_transform(args) -> transform.Compose:
     # TODO: YOUR CODE HERE                                                    #
     ###########################################################################
 
-    raise NotImplementedError('`get_val_transform()` function in ' +
-        '`part3_training_utils.py` needs to be implemented')
+    val_transform = transform.Compose([
+        transform.ResizeShort(args.short_size),
+        transform.Crop((args.train_h, args.train_w), padding= mean),
+        transform.ToTensor(),
+        transform.Normalize(mean, std)
+    ])
     
     ###########################################################################
     #                             END OF YOUR CODE                            #
