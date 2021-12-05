@@ -105,9 +105,9 @@ class PSPNet(nn.Module):
         # passed to the classifier.                                           #
         #######################################################################
 
-        raise NotImplementedError('`__init__()` function in ' +
-            '`part5_pspnet.py` needs to be implemented')
-        
+        reduction = int(2048 / len(bins))
+        self.ppm = PPM(in_dim = 2048, reduction_dim = reduction, bins = bins)
+        fea_dim = 2048 + len(bins)* reduction
 
         #######################################################################
         #                             END OF YOUR CODE                        #
@@ -141,9 +141,22 @@ class PSPNet(nn.Module):
         # TODO: YOUR CODE HERE                                                #
         #######################################################################
 
-        raise NotImplementedError('`__replace_conv_with_dilated_conv()` ' +
-            'function in `part5_pspnet.py` needs to be implemented')
-        
+        for name, module in self.layer3.named_modules():
+            if "conv2" in name:
+                module.stride = 1
+                module.dilation = 2
+                module.padding = 2
+            if "downsample" in name:
+                module.stride = 1
+                
+        for name, module in self.layer4.named_modules():
+            if "conv2" in name:
+                module.stride = 1
+                module.dilation = 2
+                module.padding = 2
+            if "downsample" in name:
+                module.stride = 1
+
         #######################################################################
         #                             END OF YOUR CODE                        #
         #######################################################################
@@ -168,9 +181,13 @@ class PSPNet(nn.Module):
         # TODO: YOUR CODE HERE                                                #
         #######################################################################
 
-        raise NotImplementedError('`__create_classifier()` function in ' +
-            '`part5_pspnet.py` needs to be implemented')
-        
+        cls = nn.Sequential(
+            nn.Conv2d(in_channels=in_feats, out_channels=out_feats, kernel_size=3),
+            nn.BatchNorm2d(num_features=out_feats),
+            nn.ReLU(),
+            nn.Dropout2d(self.dropout),
+            nn.Conv2d(in_channels=out_feats, out_channels=num_classes, kernel_size=1)
+        )
 
         #######################################################################
         #                             END OF YOUR CODE                        #
@@ -218,9 +235,30 @@ class PSPNet(nn.Module):
         # TODO: YOUR CODE HERE                                                #
         #######################################################################
 
-        raise NotImplementedError('`forward()` function in ' +
-            '`part5_pspnet.py` needs to be implemented')
-       
+        _, _, H, W = x.shape
+        x = self.layer0(x)
+        x = self.resnet.layer1(x)
+        x = self.resnet.layer2(x)
+        x = self.resnet.layer3(x)
+        aux = self.aux(x)
+        x = self.resnet.layer4(x)
+        x = self.ppm(x)
+        x = self.cls(x)
+
+        aux_loss = torch.Tensor([0])
+        aux = F.interpolate(aux,(H, W))
+        logits = F.interpolate(x,(H, W))
+        n, c, h, w  = logits.shape
+        yhat = torch.ones(n, h, w)
+        yhat = torch.argmax(logits, dim=1)
+
+        if (y != None):
+            main_loss = self.criterion(logits, y)
+            if(self.training):
+                aux_loss = self.criterion(aux, y)
+        else:
+            main_loss = None
+            aux_loss = None
 
         #######################################################################
         #                             END OF YOUR CODE                        #

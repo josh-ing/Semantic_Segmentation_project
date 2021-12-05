@@ -34,7 +34,7 @@ def get_model_and_optimizer(args) -> Tuple[nn.Module, torch.optim.Optimizer]:
     ###########################################################################
 
     if (args.arch == 'SimpleSegmentationNet'):
-        model = SimpleSegmentationNet(num_classes = args.num_classes, pretrained = args.pretrained)
+        model = SimpleSegmentationNet(num_classes = args.classes, pretrained = args.pretrained)
         parameter_list = [
             {"params": model.layer0.parameters(), "lr": args.base_lr},
             {"params": model.resnet.layer1.parameters(), "lr": args.base_lr},
