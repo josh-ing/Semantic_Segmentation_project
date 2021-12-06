@@ -37,7 +37,10 @@ def main() -> None:
     dir_list = yaml.load(open(FILE_LIST_YAML), Loader=yaml.BaseLoader)
     
     for dir_name in dir_list["required_directories"]:
-        copy(src=dir_name, dst="/".join(["temp_colab_upload", dir_name]), directory=True, required=True)
+        if (dir_name == "src/vision"):
+            copy(src=dir_name, dst="/".join(["temp_colab_upload", "vision"]), directory=True, required=True)
+        else:
+            copy(src=dir_name, dst="/".join(["temp_colab_upload", dir_name]), directory=True, required=True)
 
     for fpath in dir_list["required_files"]:
         copy(src=fpath, dst="/".join(["temp_colab_upload", fpath]), directory=False, required=True)

@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
     shutil.rmtree("temp_submission", ignore_errors=True)
     os.mkdir("temp_submission")
-    dir_list = yaml.load(open(".colab_zip_dir_list.yml"), Loader=yaml.BaseLoader)
+    dir_list = yaml.load(open(".final_zip_dir_list.yml"), Loader=yaml.BaseLoader)
     for dir_name in dir_list["required_directories"]:
         copy(dir_name, "/".join(["temp_submission", dir_name]), True, True)
     for dir_name in dir_list["required_files"]:
