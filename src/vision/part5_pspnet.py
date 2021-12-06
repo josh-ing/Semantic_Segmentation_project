@@ -45,7 +45,8 @@ class PSPNet(nn.Module):
             criterion: loss function module
             pretrained: boolean representing ...
         """
-        super(PSPNet, self).__init__()
+        # super(PSPNet, self).__init__()
+        super().__init__()
         assert layers == 50
         assert 2048 % len(bins) == 0
         assert num_classes > 1
@@ -152,8 +153,8 @@ class PSPNet(nn.Module):
         for name, module in self.layer4.named_modules():
             if "conv2" in name:
                 module.stride = 1
-                module.dilation = 2
-                module.padding = 2
+                module.dilation = 4
+                module.padding = 4
             if "downsample" in name:
                 module.stride = 1
 
