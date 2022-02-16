@@ -2,5 +2,5 @@
 
 ## Setup Overview
 
-I used various data augmentation and deep learning to recognize elements of dashcam footage. 
+I used various data augmentations and deep learning to recognize elements of dashcam footage. 
 
